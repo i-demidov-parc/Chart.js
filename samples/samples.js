@@ -43,6 +43,9 @@
 		}, {
 			title: 'Point sizes',
 			path: 'charts/line/point-sizes.html'
+		}, {
+			title: 'Condition',
+			path: 'charts/line/condition.html'
 		}]
 	}, {
 		title: 'Area charts',

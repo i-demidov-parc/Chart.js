@@ -41,6 +41,7 @@ require('./controllers/controller.line')(Chart);
 require('./controllers/controller.polarArea')(Chart);
 require('./controllers/controller.radar')(Chart);
 require('./controllers/controller.scatter')(Chart);
+require('./controllers/controller.conditionLine')(Chart);
 
 require('./charts/Chart.Bar')(Chart);
 require('./charts/Chart.Bubble')(Chart);
@@ -49,6 +50,7 @@ require('./charts/Chart.Line')(Chart);
 require('./charts/Chart.PolarArea')(Chart);
 require('./charts/Chart.Radar')(Chart);
 require('./charts/Chart.Scatter')(Chart);
+require('./charts/Chart.ConditionLine')(Chart);
 
 // Loading built-in plugins
 var plugins = require('./plugins');
