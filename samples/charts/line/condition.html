@@ -27,7 +27,6 @@
 	<button id="addData">Add Data</button>
 	<button id="removeData">Remove Data</button>
 	<script>
-		console.log('whoop-whoop');
 		var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 		var config = {
 			type: 'conditionLine',
@@ -37,16 +36,22 @@
 					label: 'My First dataset',
 					backgroundColor: window.chartColors.redAlpha,
 					borderColor: window.chartColors.red,
-					data: [
-						randomScalingFactor(),
-						randomScalingFactor(),
-						randomScalingFactor(),
-						randomScalingFactor(),
-						randomScalingFactor(),
-						randomScalingFactor(),
-						randomScalingFactor()
-					],
-					fill: true,
+					data: (() => {
+						/* const dataset = [
+							randomScalingFactor(),
+							randomScalingFactor(),
+							randomScalingFactor(),
+							randomScalingFactor(),
+							randomScalingFactor(),
+							randomScalingFactor(),
+							randomScalingFactor()
+						]; */
+
+						const dataset = [36,-12,-64,16,67,80,-45];
+						
+						return dataset;
+					})(),
+					fill: 'origin',
 					steppedLine: true
 				}/* , {
 					label: 'My Second dataset',
@@ -63,20 +68,23 @@
 						randomScalingFactor()
 					],
 					steppedLine: true
-				} */]
+				} */],
+				conditionBounds: [30, -40],
+				conditionBoundsColor: '#000',
+				conditionBoundsDash: [8, 4]
 			},
 			options: {
 				responsive: true,
 				title: {
 					display: true,
-					text: 'Chart.js Line Chart'
+					text: 'Chart.js Condition Line Chart'
 				},
 				tooltips: {
-					mode: 'index',
+					mode: 'point',
 					intersect: false,
 				},
 				hover: {
-					mode: 'nearest',
+					mode: 'point',
 					intersect: true
 				},
 				scales: {

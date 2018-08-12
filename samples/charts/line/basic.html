@@ -33,19 +33,25 @@
 				labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
 				datasets: [{
 					label: 'My First dataset',
-					backgroundColor: window.chartColors.red,
+					backgroundColor: window.chartColors.redAlpha,
 					borderColor: window.chartColors.red,
-					data: [
-						randomScalingFactor(),
-						randomScalingFactor(),
-						randomScalingFactor(),
-						randomScalingFactor(),
-						randomScalingFactor(),
-						randomScalingFactor(),
-						randomScalingFactor()
-					],
-					fill: false,
-				}, {
+					data: (() => {
+						/* const dataset = [
+							randomScalingFactor(),
+							randomScalingFactor(),
+							randomScalingFactor(),
+							randomScalingFactor(),
+							randomScalingFactor(),
+							randomScalingFactor(),
+							randomScalingFactor()
+						]; */
+
+						const dataset = [36,-12,-64,16,67,80,-45];
+						
+						return dataset;
+					})(),
+					fill: 'origin',
+				}/* , {
 					label: 'My Second dataset',
 					fill: false,
 					backgroundColor: window.chartColors.blue,
@@ -59,7 +65,7 @@
 						randomScalingFactor(),
 						randomScalingFactor()
 					],
-				}]
+				} */]
 			},
 			options: {
 				responsive: true,

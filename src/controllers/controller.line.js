@@ -9,7 +9,8 @@ defaults._set('line', {
 	spanGaps: false,
 
 	hover: {
-		mode: 'label'
+		mode: 'label',
+		animationDuration: 0	// TODO: delete
 	},
 
 	scales: {
@@ -21,7 +22,13 @@ defaults._set('line', {
 			type: 'linear',
 			id: 'y-axis-0'
 		}]
-	}
+	},
+
+	animation: {
+		duration: 0	// TODO: delete
+	},
+
+	responsiveAnimationDuration: 0	// TODO: delete
 });
 
 module.exports = function(Chart) {

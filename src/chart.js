@@ -31,6 +31,8 @@ require('./scales/scale.linear')(Chart);
 require('./scales/scale.logarithmic')(Chart);
 require('./scales/scale.radialLinear')(Chart);
 require('./scales/scale.time')(Chart);
+require('./scales/scale.conditionLinear')(Chart);
+require('./scales/scale.conditionCategory')(Chart);
 
 // Controllers must be loaded after elements
 // See Chart.core.datasetController.dataElementType

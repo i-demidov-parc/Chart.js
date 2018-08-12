@@ -190,7 +190,7 @@ function isDrawable(point) {
 	return point && !point.skip;
 }
 
-function drawArea(ctx, curve0, curve1, len0, len1) {
+function drawArea(ctx, curve0, curve1, len0, len1, chart) {
 	var i;
 
 	if (!len0 || !len1) {
@@ -203,6 +203,11 @@ function drawArea(ctx, curve0, curve1, len0, len1) {
 		helpers.canvas.lineTo(ctx, curve0[i - 1], curve0[i]);
 	}
 
+	if (chart.config.type === 'conditionLine') {
+		ctx.lineTo(chart.chartArea.right, curve0[i - 1].y);
+		ctx.lineTo(chart.chartArea.right, curve1[len1 - 1].y);
+	}
+
 	// joining the two area curves
 	ctx.lineTo(curve1[len1 - 1].x, curve1[len1 - 1].y);
 
@@ -212,7 +217,7 @@ function drawArea(ctx, curve0, curve1, len0, len1) {
 	}
 }
 
-function doFill(ctx, points, mapper, view, color, loop) {
+function doFill(ctx, points, mapper, view, color, loop, chart) {
 	var count = points.length;
 	var span = view.spanGaps;
 	var curve0 = [];
@@ -235,7 +240,7 @@ function doFill(ctx, points, mapper, view, color, loop) {
 			len1 = curve1.push(p1);
 		} else if (len0 && len1) {
 			if (!span) {
-				drawArea(ctx, curve0, curve1, len0, len1);
+				drawArea(ctx, curve0, curve1, len0, len1, chart);
 				len0 = len1 = 0;
 				curve0 = [];
 				curve1 = [];
@@ -250,7 +255,7 @@ function doFill(ctx, points, mapper, view, color, loop) {
 		}
 	}
 
-	drawArea(ctx, curve0, curve1, len0, len1);
+	drawArea(ctx, curve0, curve1, len0, len1, chart);
 
 	ctx.closePath();
 	ctx.fillStyle = color;
@@ -271,7 +276,7 @@ module.exports = {
 			el = meta.dataset;
 			source = null;
 
-			if (el && el._model && el instanceof elements.Line) {
+			if (el && el._model && (el instanceof elements.Line || el instanceof elements.ConditionLine)) {
 				source = {
 					visible: chart.isDatasetVisible(i),
 					fill: decodeFill(el, i, count),
@@ -311,7 +316,7 @@ module.exports = {
 
 		if (mapper && color && points.length) {
 			helpers.canvas.clipArea(ctx, chart.chartArea);
-			doFill(ctx, points, mapper, view, color, el._loop);
+			doFill(ctx, points, mapper, view, color, el._loop, chart);
 			helpers.canvas.unclipArea(ctx);
 		}
 	}
