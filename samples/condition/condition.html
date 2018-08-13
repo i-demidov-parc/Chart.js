@@ -33,8 +33,9 @@
 				labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
 				datasets: [{
 					label: 'My First dataset',
-					backgroundColor: window.chartColors.red,
+					backgroundColor: window.chartColors.redAlpha,
 					borderColor: window.chartColors.red,
+					pointBackgroundColor: window.chartColors.red,
 					data: [36,-12,-64,16,67,80,-45],
 					fill: false,
 				}],
@@ -103,9 +104,10 @@
 		document.getElementById('addDataset').addEventListener('click', function() {
 			var colorName = colorNames[config.data.datasets.length % colorNames.length];
 			var newColor = window.chartColors[colorName];
+			var newBackgroundColor = window.chartColors[colorName + 'Alpha'];
 			var newDataset = {
 				label: 'Dataset ' + config.data.datasets.length,
-				backgroundColor: newColor,
+				backgroundColor: newBackgroundColor,
 				borderColor: newColor,
 				data: [],
 				fill: false
