@@ -12,7 +12,7 @@ defaults._set('condition', {
 
 	scales: {
 		xAxes: [{
-			type: 'category',
+			type: 'conditionCategory',
 			id: 'x-axis-0'
 		}],
 		yAxes: [{
