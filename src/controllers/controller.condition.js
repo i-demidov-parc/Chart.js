@@ -101,6 +101,45 @@ module.exports = function(Chart) {
 		ctx.restore();
 	}
 
+	function pointDraw(chartArea, nextPoint) {
+		var vm = this._view;
+		var model = this._model;
+		var ctx = this._chart.ctx;
+		var pointStyle = vm.pointStyle;
+		var rotation = vm.rotation;
+		var radius = vm.radius;
+		var x = vm.x;
+		var y = vm.y;
+		var nextPointX = nextPoint ? nextPoint._view.x : chartArea.right;
+		var errMargin = 1.01; // 1.01 is margin for Accumulated error. (Especially Edge, IE.)
+
+		if (vm.skip) {
+			return;
+		}
+
+		var isPointInArea = fixNum(model.x) >= fixNum(chartArea.left) &&
+			fixNum(chartArea.right * errMargin) >= fixNum(model.x) &&
+			fixNum(model.y) >= fixNum(chartArea.top) &&
+			fixNum(chartArea.bottom * errMargin) >= fixNum(model.y);
+
+		// Clipping for Points.
+		if (chartArea === undefined || isPointInArea) {
+			ctx.strokeStyle = vm.borderColor || defaultColor;
+			ctx.lineWidth = helpers.valueOrDefault(vm.borderWidth, defaults.global.elements.point.borderWidth);
+			ctx.fillStyle = vm.backgroundColor || defaultColor;
+			helpers.canvas.drawPoint(ctx, pointStyle, radius, x, y, rotation);
+			helpers.canvas.drawPoint(ctx, pointStyle, radius, nextPointX, y, rotation);
+		}
+	}
+
+	function fixNum(num) {
+		if (num) {
+			num = parseFloat(num.toFixed(1));
+		}
+
+		return num;
+	}
+
 	Chart.controllers.condition = Chart.controllers.line.extend({
 		draw: function() {
 			var me = this;
@@ -129,7 +168,7 @@ module.exports = function(Chart) {
 
 			// Draw the points
 			for (; i < ilen; ++i) {
-				points[i].draw(area);
+				pointDraw.apply(points[i], [area, points[i + 1]]);
 			}
 		},
 	});
