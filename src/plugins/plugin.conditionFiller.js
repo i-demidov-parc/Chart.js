@@ -1,9 +1,3 @@
-/**
- * Plugin based on discussion from the following Chart.js issues:
- * @see https://github.com/chartjs/Chart.js/issues/2380#issuecomment-279961569
- * @see https://github.com/chartjs/Chart.js/issues/2440#issuecomment-256461897
- */
-
 'use strict';
 
 var defaults = require('../core/core.defaults');
@@ -12,7 +6,7 @@ var helpers = require('../helpers/index');
 
 defaults._set('global', {
 	plugins: {
-		filler: {
+		conditionFiller: {
 			propagate: true
 		}
 	}
@@ -190,7 +184,7 @@ function isDrawable(point) {
 	return point && !point.skip;
 }
 
-function drawArea(ctx, curve0, curve1, len0, len1) {
+function drawArea(ctx, curve0, curve1, len0, len1, chart) {
 	var i;
 
 	if (!len0 || !len1) {
@@ -203,6 +197,9 @@ function drawArea(ctx, curve0, curve1, len0, len1) {
 		helpers.canvas.lineTo(ctx, curve0[i - 1], curve0[i]);
 	}
 
+	ctx.lineTo(chart.chartArea.right, curve0[i - 1].y);
+	ctx.lineTo(chart.chartArea.right, curve1[len1 - 1].y);
+
 	// joining the two area curves
 	ctx.lineTo(curve1[len1 - 1].x, curve1[len1 - 1].y);
 
@@ -212,8 +209,8 @@ function drawArea(ctx, curve0, curve1, len0, len1) {
 	}
 }
 
-function doFill(ctx, points, mapper, view, color, loop) {
-	console.log('doFill filler');
+function doFill(ctx, points, mapper, view, color, loop, chart) {
+	console.log('doFill condition filler');
 
 	var count = points.length;
 	var span = view.spanGaps;
@@ -237,7 +234,7 @@ function doFill(ctx, points, mapper, view, color, loop) {
 			len1 = curve1.push(p1);
 		} else if (len0 && len1) {
 			if (!span) {
-				drawArea(ctx, curve0, curve1, len0, len1);
+				drawArea(ctx, curve0, curve1, len0, len1, chart);
 				len0 = len1 = 0;
 				curve0 = [];
 				curve1 = [];
@@ -252,7 +249,7 @@ function doFill(ctx, points, mapper, view, color, loop) {
 		}
 	}
 
-	drawArea(ctx, curve0, curve1, len0, len1);
+	drawArea(ctx, curve0, curve1, len0, len1, chart);
 
 	ctx.closePath();
 	ctx.fillStyle = color;
@@ -260,7 +257,7 @@ function doFill(ctx, points, mapper, view, color, loop) {
 }
 
 module.exports = {
-	id: 'filler',
+	id: 'conditionFiller',
 
 	afterDatasetsUpdate: function(chart, options) {
 		var count = (chart.data.datasets || []).length;
@@ -273,7 +270,7 @@ module.exports = {
 			el = meta.dataset;
 			source = null;
 
-			if (el && el._model && el instanceof elements.Line) {
+			if (el && el._model && el instanceof elements.ConditionLine) {
 				source = {
 					visible: chart.isDatasetVisible(i),
 					fill: decodeFill(el, i, count),
@@ -282,7 +279,7 @@ module.exports = {
 				};
 			}
 
-			meta.$filler = source;
+			meta.$conditionFiller = source;
 			sources.push(source);
 		}
 
@@ -299,7 +296,7 @@ module.exports = {
 	},
 
 	beforeDatasetDraw: function(chart, args) {
-		var meta = args.meta.$filler;
+		var meta = args.meta.$conditionFiller;
 		if (!meta) {
 			return;
 		}
@@ -313,7 +310,7 @@ module.exports = {
 
 		if (mapper && color && points.length) {
 			helpers.canvas.clipArea(ctx, chart.chartArea);
-			doFill(ctx, points, mapper, view, color, el._loop);
+			doFill(ctx, points, mapper, view, color, el._loop, chart);
 			helpers.canvas.unclipArea(ctx);
 		}
 	}

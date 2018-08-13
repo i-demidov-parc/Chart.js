@@ -58,12 +58,16 @@ module.exports = function() {
 		},
 
 		buildTicks: function() {
-			var me = this;
-			var labels = me.getLabels();
-			// If we are viewing some subset of labels, slice the original array
-			me.ticks = (me.minIndex === 0 && me.maxIndex === labels.length - 1) ? labels : labels.slice(me.minIndex, me.maxIndex + 1);
+			this.buildTicks = function () {
+				var me = this;
+				var labels = me.getLabels();
+				// If we are viewing some subset of labels, slice the original array
+				me.ticks = (me.minIndex === 0 && me.maxIndex === labels.length - 1) ? labels : labels.slice(me.minIndex, me.maxIndex + 1);
+			};
 
-			me.ticks.push('');
+			this.buildTicks();
+
+			this.ticks.push('');
 		},
 
 		getLabelForIndex: function(index, datasetIndex) {
