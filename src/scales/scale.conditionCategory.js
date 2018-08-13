@@ -11,6 +11,19 @@ module.exports = function() {
 	};
 
 	var DatasetScale = Scale.extend({
+		draw: function () {
+			var me = this;
+			var options = me.options;
+			var optionTicks = options.ticks.minor;
+			var labelOffset = optionTicks.labelOffset;
+
+			optionTicks.labelOffset = labelOffset + (me.getPixelForTick(1) - me.getPixelForTick(0)) / 2;
+
+			Scale.prototype.draw.apply(me, arguments);
+
+			optionTicks.labelOffset = labelOffset;
+		},
+		
 		/**
 		* Internal function to get the correct labels. If data.xLabels or data.yLabels are defined, use those
 		* else fall back to data.labels
@@ -45,10 +58,16 @@ module.exports = function() {
 		},
 
 		buildTicks: function() {
-			var me = this;
-			var labels = me.getLabels();
-			// If we are viewing some subset of labels, slice the original array
-			me.ticks = (me.minIndex === 0 && me.maxIndex === labels.length - 1) ? labels : labels.slice(me.minIndex, me.maxIndex + 1);
+			this.buildTicks = function () {
+				var me = this;
+				var labels = me.getLabels();
+				// If we are viewing some subset of labels, slice the original array
+				me.ticks = (me.minIndex === 0 && me.maxIndex === labels.length - 1) ? labels : labels.slice(me.minIndex, me.maxIndex + 1);
+			};
+
+			this.buildTicks();
+
+			this.ticks.push('');
 		},
 
 		getLabelForIndex: function(index, datasetIndex) {
