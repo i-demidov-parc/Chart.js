@@ -28,7 +28,7 @@
 	<script>
 		var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 		var config = {
-			type: 'line',
+			type: 'condition',
 			data: {
 				labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
 				datasets: [{
@@ -41,6 +41,10 @@
 			},
 			options: {
 				responsive: true,
+				responsiveAnimationDuration: 0,
+				animation: {
+					duration: 0
+				},
 				title: {
 					display: true,
 					text: 'Chart.js Condition Line Chart'
@@ -51,7 +55,8 @@
 				},
 				hover: {
 					mode: 'nearest',
-					intersect: true
+					intersect: true,
+					animationDuration: 0
 				},
 				scales: {
 					xAxes: [{

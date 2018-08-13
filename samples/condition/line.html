@@ -41,6 +41,10 @@
 			},
 			options: {
 				responsive: true,
+				responsiveAnimationDuration: 0,
+				animation: {
+					duration: 0
+				},
 				title: {
 					display: true,
 					text: 'Chart.js Line Chart'
@@ -51,7 +55,8 @@
 				},
 				hover: {
 					mode: 'nearest',
-					intersect: true
+					intersect: true,
+					animationDuration: 0
 				},
 				scales: {
 					xAxes: [{
