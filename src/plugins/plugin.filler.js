@@ -213,8 +213,6 @@ function drawArea(ctx, curve0, curve1, len0, len1) {
 }
 
 function doFill(ctx, points, mapper, view, color, loop) {
-	console.log('doFill filler');
-
 	var count = points.length;
 	var span = view.spanGaps;
 	var curve0 = [];

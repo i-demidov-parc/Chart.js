@@ -22,28 +22,28 @@ module.exports = function(Chart) {
 			var chart = me.chart;
 			var config = chart.config;
 			var data = config.data;
-			var conditionBounds = data.conditionBounds;
-			var boundY;
+			var conditionBoundaries = data.conditionBoundaries;
+			var boundaryY;
 
 			Chart.LinearScaleBase.prototype.draw.apply(me, arguments);
 
-			if (conditionBounds && conditionBounds.length) {
+			if (conditionBoundaries && conditionBoundaries.length) {
 				context.save();
 
-				context.strokeStyle = data.conditionBoundsColor;
+				context.strokeStyle = data.conditionBoundariesColor;
 
-				if (data.conditionBoundsDash) {
-					context.setLineDash(data.conditionBoundsDash);
-					context.lineDashOffset = data.conditionBoundsDashOffset || 0;
+				if (data.conditionBoundariesDash) {
+					context.setLineDash(data.conditionBoundariesDash);
+					context.lineDashOffset = data.conditionBoundariesDashOffset || 0;
 				}
 
 				context.beginPath();
 
-				for (var i = 0, imax = conditionBounds.length; i < imax; i++) {
-					boundY = me.getPixelForValue(conditionBounds[i]);
+				for (var i = 0, imax = conditionBoundaries.length; i < imax; i++) {
+					boundaryY = me.getPixelForValue(conditionBoundaries[i]);
 
-					context.moveTo(chartArea.left, boundY);
-					context.lineTo(chartArea.right, boundY);
+					context.moveTo(chartArea.left, boundaryY);
+					context.lineTo(chartArea.right, boundaryY);
 				}
 
 				context.stroke();

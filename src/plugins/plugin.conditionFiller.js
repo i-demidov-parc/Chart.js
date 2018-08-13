@@ -83,6 +83,7 @@ function decodeFill(el, index, count) {
 	case 'origin':
 	case 'start':
 	case 'end':
+	case 'boundaries':
 		return fill;
 	// invalid fill values
 	default:
@@ -109,6 +110,8 @@ function computeBoundary(source) {
 		target = model.scaleBottom === undefined ? scale.bottom : model.scaleBottom;
 	} else if (fill === 'end') {
 		target = model.scaleTop === undefined ? scale.top : model.scaleTop;
+	} else if (fill === 'boundaries' && source.conditionBoundaries.length) {
+		target = Math.min.apply(Math, source.conditionBoundaries);
 	} else if (model.scaleZero !== undefined) {
 		target = model.scaleZero;
 	} else if (scale.getBasePosition) {
@@ -210,8 +213,6 @@ function drawArea(ctx, curve0, curve1, len0, len1, chart) {
 }
 
 function doFill(ctx, points, mapper, view, color, loop, chart) {
-	console.log('doFill condition filler');
-
 	var count = points.length;
 	var span = view.spanGaps;
 	var curve0 = [];
@@ -263,7 +264,7 @@ module.exports = {
 		var count = (chart.data.datasets || []).length;
 		var propagate = options.propagate;
 		var sources = [];
-		var meta, i, el, source;
+		var meta, i, el, source, scale;
 
 		for (i = 0; i < count; ++i) {
 			meta = chart.getDatasetMeta(i);
@@ -271,11 +272,16 @@ module.exports = {
 			source = null;
 
 			if (el && el._model && el instanceof elements.ConditionLine) {
+				scale = el._scale;
+
 				source = {
 					visible: chart.isDatasetVisible(i),
 					fill: decodeFill(el, i, count),
 					chart: chart,
-					el: el
+					el: el,
+					conditionBoundaries: chart.config.data.conditionBoundaries ? chart.config.data.conditionBoundaries.map(function (boundary) {
+						return scale.getPixelForValue(boundary);
+					}) : []
 				};
 			}
 
