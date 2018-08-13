@@ -19,7 +19,7 @@ defaults._set('condition', {
 			id: 'x-axis-0'
 		}],
 		yAxes: [{
-			type: 'linear',
+			type: 'conditionLinear',
 			id: 'y-axis-0'
 		}]
 	}
