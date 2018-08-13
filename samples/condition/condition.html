@@ -28,7 +28,7 @@
 	<script>
 		var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 		var config = {
-			type: 'condition',
+			// type: 'condition',
 			data: {
 				labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
 				datasets: [{
@@ -37,7 +37,7 @@
 					borderColor: window.chartColors.red,
 					pointBackgroundColor: window.chartColors.red,
 					data: [36,-12,-64,16,67,80,-45],
-					fill: false,
+					fill: false
 				}],
 				conditionBoundaries: {
 					min: -35,
@@ -86,7 +86,7 @@
 
 		window.onload = function() {
 			var ctx = document.getElementById('canvas').getContext('2d');
-			window.myLine = new Chart(ctx, config);
+			window.myLine = new Chart.Condition(ctx, config);
 		};
 
 		document.getElementById('randomizeData').addEventListener('click', function() {
