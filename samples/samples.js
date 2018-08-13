@@ -3,6 +3,15 @@
 	var Samples = global.Samples || (global.Samples = {});
 
 	Samples.items = [{
+		title: 'Condition',
+		items: [{
+			title: 'Condition Chart',
+			path: 'condition/condition.html'
+		}, {
+			title: 'Line Chart',
+			path: 'condition/line.html'
+		}]
+	}, {
 		title: 'Bar charts',
 		items: [{
 			title: 'Vertical',
