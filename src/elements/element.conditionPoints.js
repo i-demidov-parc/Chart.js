@@ -66,9 +66,12 @@ module.exports = Element.extend({
 	},
 
 	tooltipPosition: function() {
+		var me = this;
 		var vm = this._view;
+		var x = vm.x + me._xScale.scaleItemCenter;
+
 		return {
-			x: vm.x,
+			x: x,
 			y: vm.y,
 			padding: vm.radius + vm.borderWidth
 		};
