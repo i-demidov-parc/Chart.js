@@ -28,7 +28,6 @@
 	<script>
 		var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 		var config = {
-			// type: 'condition',
 			data: {
 				labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
 				datasets: [{
@@ -36,6 +35,8 @@
 					backgroundColor: window.chartColors.redAlpha,
 					borderColor: window.chartColors.red,
 					pointBackgroundColor: window.chartColors.red,
+					pointRadius: 0,
+					pointHoverRadius: 3,
 					data: [36,-12,-64,16,67,80,-45],
 					fill: false
 				}],
@@ -52,17 +53,22 @@
 				animation: {
 					duration: 0
 				},
+				layout: {
+					padding: {
+						right: 8
+					}
+				},
 				title: {
 					display: true,
 					text: 'Chart.js Condition Line Chart'
 				},
 				tooltips: {
-					mode: 'point',
+					mode: 'index',
 					intersect: false,
 				},
 				hover: {
-					mode: 'nearest',
-					intersect: true,
+					mode: 'index',
+					intersect: false,
 					animationDuration: 0
 				},
 				scales: {
