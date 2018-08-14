@@ -11,13 +11,25 @@ module.exports = function() {
 	};
 
 	var DatasetScale = Scale.extend({
+		update: function () {
+			var me = this;
+			var result = Scale.prototype.update.apply(me, arguments);
+			var scaleItemDistance = me.getPixelForTick(1) - me.getPixelForTick(0);
+			var scaleItemCenter = scaleItemDistance / 2;
+
+			me.scaleItemDistance = scaleItemDistance || 0;
+			me.scaleItemCenter = scaleItemCenter || 0;
+
+			return result;
+		},
+
 		draw: function () {
 			var me = this;
 			var options = me.options;
 			var optionTicks = options.ticks.minor;
 			var labelOffset = optionTicks.labelOffset;
 
-			optionTicks.labelOffset = labelOffset + (me.getPixelForTick(1) - me.getPixelForTick(0)) / 2;
+			optionTicks.labelOffset = labelOffset + me.scaleItemCenter;
 
 			Scale.prototype.draw.apply(me, arguments);
 
