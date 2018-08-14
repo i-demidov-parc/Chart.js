@@ -6,22 +6,6 @@ var helpers = require('../helpers/index');
 
 var defaultColor = defaults.global.defaultColor;
 
-defaults._set('global', {
-	elements: {
-		wat: {
-			radius: 3,
-			pointStyle: 'circle',
-			backgroundColor: defaultColor,
-			borderColor: defaultColor,
-			borderWidth: 1,
-			// Hover
-			hitRadius: 1,
-			hoverRadius: 4,
-			hoverBorderWidth: 1
-		}
-	}
-});
-
 function xRange(mouseX) {
 	var vm = this._view;
 	return vm ? (Math.abs(mouseX - vm.x) < vm.radius + vm.hitRadius) : false;
@@ -100,6 +84,15 @@ module.exports = Element.extend({
 
 		// Clipping for Points.
 		if (chartArea === undefined || isPointInArea) {
+			if (vm.pointsLineWidth) {
+				ctx.beginPath();
+				ctx.strokeStyle = vm.borderColor || defaultColor;
+				ctx.lineWidth = vm.pointsLineWidth;
+				ctx.moveTo(x, y);
+				ctx.lineTo(nextPointX, y);
+				ctx.stroke();
+			}
+
 			ctx.strokeStyle = vm.borderColor || defaultColor;
 			ctx.lineWidth = helpers.valueOrDefault(vm.borderWidth, defaults.global.elements.point.borderWidth);
 			ctx.fillStyle = vm.backgroundColor || defaultColor;
