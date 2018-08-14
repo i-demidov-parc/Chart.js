@@ -26,8 +26,33 @@ function fixNum(num) {
 
 module.exports = Element.extend({
 	inRange: function(mouseX, mouseY) {
-		var vm = this._view;
-		return vm ? ((Math.pow(mouseX - vm.x, 2) + Math.pow(mouseY - vm.y, 2)) < Math.pow(vm.hitRadius + vm.radius, 2)) : false;
+		var me = this;
+		var vm = me._view;
+		var x1, x2, by1, by2, inRange;
+
+		if (!vm) {
+			return false;
+		}
+
+		x1 = vm.x;
+		inRange = (Math.pow(mouseX - x1, 2) + Math.pow(mouseY - vm.y, 2)) < Math.pow(vm.hitRadius + vm.radius, 2);
+
+		if (!inRange) {
+			x2 = x1 + me._xScale.scaleItemDistance;
+			inRange = (Math.pow(mouseX - x2, 2) + Math.pow(mouseY - vm.y, 2)) < Math.pow(vm.hitRadius + vm.radius, 2);
+		}
+
+		if (!inRange) {
+			by1 = vm.y - vm.hitRadius - vm.radius;
+			by2 = vm.y + vm.hitRadius + vm.radius;
+
+			inRange = mouseX >= x1 &&
+					  mouseX <= x2 &&
+					  mouseY >= by1 &&
+					  mouseY <= by2;
+		}
+
+		return inRange;
 	},
 
 	inLabelRange: xRange,
