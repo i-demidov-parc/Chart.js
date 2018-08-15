@@ -2,19 +2,10 @@
 
 var defaults = require('../core/core.defaults');
 var Element = require('../core/core.element');
+var elements = require('../elements/index');
 var helpers = require('../helpers/index');
 
 var defaultColor = defaults.global.defaultColor;
-
-function xRange(mouseX) {
-	var vm = this._view;
-	return vm ? (Math.abs(mouseX - vm.x) < vm.radius + vm.hitRadius) : false;
-}
-
-function yRange(mouseY) {
-	var vm = this._view;
-	return vm ? (Math.abs(mouseY - vm.y) < vm.radius + vm.hitRadius) : false;
-}
 
 function fixNum(num) {
 	if (num) {
@@ -24,7 +15,7 @@ function fixNum(num) {
 	return num;
 }
 
-module.exports = Element.extend({
+module.exports = elements.Point.extend({
 	inRange: function(mouseX, mouseY) {
 		var me = this;
 		var vm = me._view;
@@ -55,10 +46,6 @@ module.exports = Element.extend({
 		return inRange;
 	},
 
-	inLabelRange: xRange,
-	inXRange: xRange,
-	inYRange: yRange,
-
 	getCenterPoint: function() {
 		var me = this;
 		var vm = me._view;
@@ -68,10 +55,6 @@ module.exports = Element.extend({
 			x: x,
 			y: vm.y
 		};
-	},
-
-	getArea: function() {
-		return Math.PI * Math.pow(this._view.radius, 2);
 	},
 
 	tooltipPosition: function() {
@@ -109,6 +92,8 @@ module.exports = Element.extend({
 
 		// Clipping for Points.
 		if (chartArea === undefined || isPointInArea) {
+			console.log(vm.pointsLineWidth);
+
 			if (vm.pointsLineWidth) {
 				ctx.beginPath();
 				ctx.strokeStyle = vm.borderColor || defaultColor;
